@@ -22,5 +22,5 @@ def listar_jogo(jogos):
         print(f'\nTitulo: {jogo['titulo']}')
         print(f'\nPlataforma: {jogo['plataforma']}')
         print(f'\ngenero: {jogo['genero']}')
-        print
+        print(f'\nLocação por dia: {jogo['locacao_dia']}')
         
