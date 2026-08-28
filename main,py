@@ -1,0 +1,168 @@
+from Persistencia import carregar_jogo
+from jogo import cadastrar_jogo, listar_jogos
+from Cliente import cadastrar_cliente, listar_clientes
+from locacoes import realizar_locacao, listar_locacoes
+
+
+def cadastrar_jogo_menu(jogos):
+    print("\n========== CADASTRAR JOGO ==========")
+
+    titulo = input("Título: ")
+    plataforma = input("Plataforma: ")
+    genero = input("Gênero: ")
+
+    while True:
+        try:
+            locacao_dia = float(input("Valor da locação por dia: R$ "))
+
+            if locacao_dia <= 0:
+                print("O valor deve ser maior que zero.")
+            else:
+                break
+
+        except ValueError:
+            print("Digite um valor numérico válido.")
+
+    cadastrar_jogo(
+        jogos,
+        titulo,
+        plataforma,
+        genero,
+        locacao_dia
+    )
+
+    print("\nJogo cadastrado com sucesso!")
+
+
+def cadastrar_cliente_menu(clientes):
+    print("\n========== CADASTRAR CLIENTE ==========")
+
+    nome = input("Nome: ")
+    telefone = input("Telefone: ")
+
+    cadastrar_cliente(
+        clientes,
+        nome,
+        telefone
+    )
+
+    print("\nCliente cadastrado com sucesso!")
+
+
+def realizar_locacao_menu(jogos, clientes, locacoes):
+    if not jogos:
+        print("\nNão existem jogos cadastrados.")
+        return
+
+    if not clientes:
+        print("\nNão existem clientes cadastrados.")
+        return
+
+    print("\n========== REALIZAR LOCAÇÃO ==========")
+
+    listar_clientes(clientes)
+
+    while True:
+        try:
+            numero_cliente = int(input("\nDigite o número do cliente: "))
+
+            if 1 <= numero_cliente <= len(clientes):
+                cliente = clientes[numero_cliente - 1]
+                break
+
+            print("Cliente inválido.")
+
+        except ValueError:
+            print("Digite um número válido.")
+
+    listar_jogos(jogos)
+
+    while True:
+        try:
+            numero_jogo = int(input("\nDigite o número do jogo: "))
+
+            if 1 <= numero_jogo <= len(jogos):
+                jogo = jogos[numero_jogo - 1]
+                break
+
+            print("Jogo inválido.")
+
+        except ValueError:
+            print("Digite um número válido.")
+
+    while True:
+        try:
+            dias = int(input("Quantidade de dias: "))
+
+            if dias <= 0:
+                print("A quantidade de dias deve ser maior que zero.")
+            else:
+                break
+
+        except ValueError:
+            print("Digite um número inteiro válido.")
+
+    locacao = realizar_locacao(
+        locacoes,
+        cliente,
+        jogo,
+        dias
+    )
+
+    print("\n========== LOCAÇÃO REALIZADA ==========")
+    print(f"Cliente: {locacao['cliente']}")
+    print(f"Jogo: {locacao['jogo']}")
+    print(f"Dias: {locacao['dias']}")
+    print(f"Valor sem desconto: R$ {locacao['valor_total']:.2f}")
+    print(f"Desconto: {locacao['desconto']}%")
+    print(f"Valor do desconto: R$ {locacao['valor_desconto']:.2f}")
+    print(f"Valor final: R$ {locacao['valor_final']:.2f}")
+    print("=======================================")
+
+
+def menu():
+    jogos = listar_locacoes("jogos.json")
+    clientes = listar_clientes("clientes.json")
+    locacoes = listar_locacoes("locacoes.json")
+
+    while True:
+        print("\n")
+        print("===================================")
+        print("       SISTEMA DE LOCADORA")
+        print("===================================")
+        print("1 - Cadastrar jogo")
+        print("2 - Listar jogos")
+        print("3 - Cadastrar cliente")
+        print("4 - Listar clientes")
+        print("5 - Realizar locação")
+        print("6 - Listar locações")
+        print("0 - Sair")
+        print("===================================")
+
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            cadastrar_jogo_menu(jogos)
+
+        elif opcao == "2":
+            listar_jogos(jogos)
+
+        elif opcao == "3":
+            cadastrar_cliente_menu(clientes)
+
+        elif opcao == "4":
+            listar_clientes(clientes)
+
+        elif opcao == "5":
+            realizar_locacao_menu(jogos, clientes, locacoes)
+
+        elif opcao == "6":
+            listar_locacoes(locacoes)
+
+        elif opcao == "0":
+            print("\nPrograma encerrado.")
+            break
+
+        else:
+            print("\nOpção inválida. Tente novamente.")
+

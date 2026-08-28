@@ -1,7 +1,7 @@
 jogos = []
 
 
-def cadastro_jogo(titulo,plataforma,genero,locacao_dia):
+def cadastro_jogos(titulo,plataforma,genero,locacao_dia):
 
     jogo = {
         'titulo': titulo,
